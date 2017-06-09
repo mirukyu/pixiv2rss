@@ -77,14 +77,14 @@ def create_feed(username, password, feed_file_name):
     illusts = api.illust_follow(offset=offset)
     offset += len(illusts.illusts)
   
-  for illust in illusts.illusts:
-    print("new illust")
-    if illust.page_count>1: # pixiv comic
-      for page in range(0, illust.page_count-1):
+    for illust in illusts.illusts:
+      print("new illust")
+      if illust.page_count>1: # pixiv comic
+        for page in range(0, illust.page_count-1):
       # we create one RSS entry by image in the comic
-        handle_one_img_url(api, feed, illust.meta_pages[page].image_urls.medium, illust)
-    else:
-      handle_one_img_url(api, feed, illust.image_urls.medium, illust)
+          handle_one_img_url(api, feed, illust.meta_pages[page].image_urls.medium, illust)
+      else:
+          handle_one_img_url(api, feed, illust.image_urls.medium, illust)
 
   feed.rss_file(FOLDER_PATH + feed_file_name)
 
@@ -92,8 +92,9 @@ def create_feed(username, password, feed_file_name):
 def garbage_colector(days):
   now = time.time()
   for f in os.listdir("."):
-    if os.stat(f).st_mtime < now - days * 86400:
-      os.remove(f)
+	if f.endswith(".jpg"):
+		if os.stat(f).st_mtime < now - days * 86400:
+		  os.remove(f)
 
 
 
